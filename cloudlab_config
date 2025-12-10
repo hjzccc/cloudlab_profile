@@ -38,13 +38,17 @@ for i in range(0, params.n):
     # n.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+shenango-PG0//nu'
     n.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+flashburst-PG0:ddb_ubuntu20'
     n.addService(pg.Execute(
-        shell="bash",
-        command="mkdir -p /local/tmp && wget -P /local/tmp/ https://raw.githubusercontent.com/totoroyyb/k8s-cloudlab-profile/main/ssh.sh"
-    ))
-    n.addService(pg.Execute(
-        shell="bash",
-        command="sudo bash /local/tmp/ssh.sh"
-    ))
+    shell="bash",
+    command="""mkdir -p /local/tmp && \
+wget -P /local/tmp/ https://raw.githubusercontent.com/hjzccc/cloudlab_profile/refs/heads/main/install_dependencis.sh && \
+chmod +x /local/tmp/install_dependencis.sh && \
+/local/tmp/install_dependencis.sh && \
+pip install kubernetes uuid && \
+wget -P /local/tmp/ https://raw.githubusercontent.com/hjzccc/cloudlab_profile/refs/heads/main/k8s/ssh_gateway.yaml && \
+wget -P /local/tmp/ https://raw.githubusercontent.com/hjzccc/cloudlab_profile/refs/heads/main/k8s/serviceweaver_config.yaml && \
+wget -P /local/tmp/ https://raw.githubusercontent.com/hjzccc/cloudlab_profile/refs/heads/main/k8s/setup_debug_container.py
+"""
+))
     nodes.append(n)
     iface_0 = n.addInterface('interface-%d' % (2 * i), pg.IPv4Address('10.10.1.%d' % (i + 1),'255.255.255.0'))
     iface_0.bandwidth = params.link_0_bw * 1000000
@@ -65,17 +69,17 @@ if params.no_inter_switch:
 for iface in ifaces_0:
     link_0.addInterface(iface)
 
-# link 1
-if params.disable_second_link:
-    pass
-else:
-    link_1 = request.Link('link-1')
-    link_1.Site('undefined')
-    link_1.bandwidth = params.link_1_bw * 1000000
-    if params.no_inter_switch:
-        link_1.setNoInterSwitchLinks()
-    for iface in ifaces_1:
-        link_1.addInterface(iface)
+# # link 1
+# if params.disable_second_link:
+#     pass
+# else:
+#     link_1 = request.Link('link-1')
+#     link_1.Site('undefined')
+#     link_1.bandwidth = params.link_1_bw * 1000000
+#     if params.no_inter_switch:
+#         link_1.setNoInterSwitchLinks()
+#     for iface in ifaces_1:
+#         link_1.addInterface(iface)
 
 # Print the generated rspec
 pc.printRequestRSpec(request)
