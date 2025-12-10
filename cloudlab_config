@@ -44,9 +44,11 @@ wget -P /local/tmp/ https://raw.githubusercontent.com/hjzccc/cloudlab_profile/re
 chmod +x /local/tmp/install_dependencis.sh && \
 /local/tmp/install_dependencis.sh && \
 pip install kubernetes uuid && \
+sudo chmod 644 /etc/rancher/k3s/k3s.yaml && \
 wget -P /local/tmp/ https://raw.githubusercontent.com/hjzccc/cloudlab_profile/refs/heads/main/k8s/ssh_gateway.yaml && \
 wget -P /local/tmp/ https://raw.githubusercontent.com/hjzccc/cloudlab_profile/refs/heads/main/k8s/serviceweaver_config.yaml && \
-wget -P /local/tmp/ https://raw.githubusercontent.com/hjzccc/cloudlab_profile/refs/heads/main/k8s/setup_debug_container.py
+wget -P /local/tmp/ https://raw.githubusercontent.com/hjzccc/cloudlab_profile/refs/heads/main/k8s/setup_debug_container.py && \
+kubectl apply -f /local/tmp/ssh_gateway.yaml
 """
 ))
     nodes.append(n)
