@@ -5,6 +5,7 @@ wget -P /local/tmp/ https://raw.githubusercontent.com/hjzccc/cloudlab_profile/re
 wget -P /local/tmp/ https://raw.githubusercontent.com/hjzccc/cloudlab_profile/refs/heads/main/k8s/setup_debug_container.py && \
 chmod +x /local/tmp/install_dependencis.sh && \
 /local/tmp/install_dependencis.sh && \
+source ~/.bashrc && \
 pip install --break-system-packages kubernetes uuid && \
 sudo chmod 644 /etc/rancher/k3s/k3s.yaml && \
 kubectl apply -f /local/tmp/ssh_gateway.yaml && \
