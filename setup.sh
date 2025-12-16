@@ -9,4 +9,8 @@ source ~/.bashrc && \
 pip install --break-system-packages kubernetes uuid && \
 sudo chmod 644 /etc/rancher/k3s/k3s.yaml && \
 kubectl apply -f /local/tmp/ssh_gateway.yaml && \
+if ! command -v go >/dev/null 2>&1; then
+  [ -d /usr/local/go/bin ] && export PATH="$PATH:/usr/local/go/bin"
+  [ -d "$HOME/go/bin" ] && export PATH="$PATH:$HOME/go/bin"
+fi && \
 go install github.com/ServiceWeaver/weaver-kube/cmd/weaver-kube@v0.23.0
