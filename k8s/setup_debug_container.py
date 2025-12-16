@@ -2,7 +2,7 @@ from uuid import uuid4
 from kubernetes import client, config
 
 KUBECONFIG_PATH = "<kubectl_config_path>"
-SERVICEWEAVER_POD_LABEL = "<service_name>"  # eg. "serviceweaver/app=server.out"
+SERVICEWEAVER_POD_LABEL = "<service_name>"  # eg. "server.out"
 
 config.load_kube_config(KUBECONFIG_PATH)
 api_instance = client.CoreV1Api()
@@ -31,7 +31,7 @@ def setup_debug_container(pod_name: str, namespace: str = "default") -> None:
 
 if __name__ == "__main__":
     pods = api_instance.list_namespaced_pod(
-        namespace="default", label_selector=SERVICEWEAVER_POD_LABEL
+        namespace="default", label_selector=f"serviceweaver/app={SERVICEWEAVER_POD_LABEL}"
     )
     print(f"Found {len(pods.items)} pods")
 
